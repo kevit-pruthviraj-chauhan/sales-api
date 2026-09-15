@@ -2,18 +2,18 @@ import { Entity, Property, PrimaryKey } from '@mikro-orm/decorators/legacy';
 
 @Entity()
 export class Product {
-  @PrimaryKey({ type: 'ObjectId' })
-  _id: string;
+  @PrimaryKey()
+  _id!: string;
 
-  @Property({ type: 'string' })
-  name: string;
+  @Property()
+  name!: string;
 
-  @Property({ type: 'string' })
-  sku: string;
+  @Property()
+  sku!: string;
 
-  @Property({ type: 'number' })
-  price: number;
+  @Property()
+  price!: number;
 
-  @Property({ type: 'number' })
-  stock: number;
+  @Property()
+  stock!: number;
 }
