@@ -1,22 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { EntityManager } from '@mikro-orm/core';
 import { Product } from '../../data-access/product/product.entity';
+import { BaseRepository } from '../base.repository';
+import { EntityRepository } from '@mikro-orm/mongodb';
+import { ProductUpdateDto } from '../../shared/dto/product/product-update.dto';
+import { InjectRepository } from '@mikro-orm/nestjs';
 
 @Injectable()
-export class ProductRepository {
-  constructor(private readonly em: EntityManager) {}
+export class ProductRepository extends BaseRepository<Product> {
+  constructor(
+    @InjectRepository(Product)
+    private readonly repo: EntityRepository<Product>,
+  ) {
+    super(repo);
+  }
 
-  async createProduct(
-    name: string,
-    price: number,
-    sku: string,
-    stock: number,
-  ): Promise<Product> {
-    const product = new Product();
-    product.name = name;
-    product.price = price;
-    product.sku = sku;
-    product.stock = stock;
+  async createProduct(data: RequiredEntityData<Product>): Promise<Product> {
+    const product = this.em.create(Product, data);
     this.em.persist(product);
     await this.em.flush();
     return product;
@@ -30,13 +29,13 @@ export class ProductRepository {
     return await this.em.findOne(Product, id);
   }
 
-  async update(id: string, name: string, price: number): Promise<Product> {
+  async update(id: string, data: ProductUpdateDto): Promise<Product> {
     const product = await this.findOne(id);
     if (!product) {
       throw new Error('Product not found');
     }
-    product.name = name;
-    product.price = price;
+    product.name = data.name;
+    product.price = data.price;
     await this.em.flush();
     return product;
   }

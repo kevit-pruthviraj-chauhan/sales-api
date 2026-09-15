@@ -9,21 +9,17 @@ import {
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { Product } from '../../data-access/product/product.entity';
-import { ProductCreateDto } from '../../shared/dto/product/product-create.dto';
-import { ProductUpdateDto } from '../../shared/dto/product/product-update.dto';
+import type { RequiredEntityData } from '@mikro-orm/mongodb';
 
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
-  async createProduct(@Body() product: ProductCreateDto): Promise<Product> {
-    return this.productService.createProduct(
-      product.name,
-      product.price,
-      product.sku,
-      product.stock,
-    );
+  async createProduct(
+    @Body() product: RequiredEntityData<Product>,
+  ): Promise<Product> {
+    return this.productService.createProduct(product);
   }
 
   @Get()
@@ -39,9 +35,9 @@ export class ProductController {
   @Put(':id')
   async update(
     @Param('id') id: string,
-    @Body() product: ProductUpdateDto,
+    @Body() product: RequiredEntityData<Product>,
   ): Promise<Product> {
-    return this.productService.update(id, product.name, product.price);
+    return this.productService.update(id, product);
   }
 
   @Delete(':id')

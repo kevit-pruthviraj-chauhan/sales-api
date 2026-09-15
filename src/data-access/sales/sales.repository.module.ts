@@ -3,14 +3,17 @@ import { EntityManager } from '@mikro-orm/core';
 import { Sales } from './sales.entity';
 import { SalesCreateDto } from '../../shared/dto/sales/sales-create.dto';
 import { SalesUpdateDto } from '../../shared/dto/sales/sales-update.dto';
+import { Customer } from '../customer';
 
 @Injectable()
 export class ProductRepository {
   constructor(private readonly em: EntityManager) {}
 
   async createSales(data: SalesCreateDto): Promise<Sales> {
+    const customerRef = this.em.getReference(Customer, data.customer_id);
+
     const sales = new Sales();
-    sales.customer_id = data.customer_id;
+    sales.customer = customerRef;
     sales.items = data.items;
     sales.tax = data.tax;
     sales.notes = data.notes;
@@ -32,7 +35,9 @@ export class ProductRepository {
     if (!sales) {
       throw new Error('Sales not found');
     }
-    sales.customer_id = data.customer_id;
+    const customerRef = this.em.getReference(Customer, data.customer_id);
+
+    sales.customer = customerRef;
     sales.items = data.items;
     sales.tax = data.tax;
     sales.notes = data.notes;

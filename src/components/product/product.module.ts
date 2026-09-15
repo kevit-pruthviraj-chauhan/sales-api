@@ -6,8 +6,8 @@ import { Product } from '../../data-access/product/product.entity';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 
 @Module({
+  imports: [MikroOrmModule.forFeature([Product])],
   providers: [ProductService, ProductRepository],
   controllers: [ProductController],
-  imports: [MikroOrmModule.forFeature([Product])],
 })
 export class ProductModule {}

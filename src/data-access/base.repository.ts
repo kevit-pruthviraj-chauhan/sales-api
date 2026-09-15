@@ -66,7 +66,6 @@ export abstract class BaseRepository<T extends AnyEntity<T>> {
     const entity = await this.findById(id);
     if (!entity) return false;
 
-
     if (
       'isActive' in entity &&
       typeof (entity as Record<string, unknown>).isActive === 'boolean'

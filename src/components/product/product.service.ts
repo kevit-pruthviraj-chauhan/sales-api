@@ -1,18 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Product } from '../../data-access/product/product.entity';
+import { RequiredEntityData } from '@mikro-orm/mongodb';
 import { ProductRepository } from '../../data-access/product/product.repository.module';
+import { ProductUpdateDto } from '../../shared/dto/product/product-update.dto';
 
 @Injectable()
 export class ProductService {
-  constructor(private readonly productRepo: ProductRepository) {}
+  constructor(private readonly productRepo: ProductRepository) { }
 
-  async createProduct(
-    name: string,
-    price: number,
-    sku: string,
-    stock: number,
-  ): Promise<Product> {
-    return await this.productRepo.createProduct(name, price, sku, stock);
+  async createProduct(data: RequiredEntityData<Product>): Promise<Product> {
+    return await this.productRepo.createProduct(data);
   }
 
   async findAll(): Promise<Product[]> {
@@ -27,12 +24,8 @@ export class ProductService {
     return product;
   }
 
-  async update(id: string, name: string, price: number): Promise<Product> {
-    const product = await this.findOne(id);
-    product.name = name;
-    product.price = price;
-    await this.productRepo.update(id, name, price);
-    return product;
+  async update(id: string, data: ProductUpdateDto): Promise<Product> {
+    return await this.productRepo.update(id, data);
   }
 
   async remove(id: string): Promise<void> {
