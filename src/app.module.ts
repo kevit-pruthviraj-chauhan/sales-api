@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { CustomerModule } from './components/customer/customer.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { ProductModule } from './components/product/product.module';
+import { SalesModule } from './components/sales/sales.module';
 import microOrmConfig from './shared/configs/micro-orm.config';
 
 @Module({
@@ -11,6 +12,7 @@ import microOrmConfig from './shared/configs/micro-orm.config';
     MikroOrmModule.forRoot(microOrmConfig),
     CustomerModule,
     ProductModule,
+    SalesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
