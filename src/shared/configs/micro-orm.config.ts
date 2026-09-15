@@ -19,5 +19,3 @@ export default defineConfig({
 
   logger: (message: string) => dbLogger.log(message),
 });
-
-console.log(process.env.MONGODB_URL, process.env.DATABASE_NAME);
