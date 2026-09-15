@@ -19,7 +19,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         return {
           ...microOrmConfig,
           clientUrl: configService.get('MONGODB_URL'),
-          dbName: configService.get('DATABASE_NAME')
+          dbName: configService.get('DATABASE_NAME'),
         };
       },
       inject: [ConfigService],

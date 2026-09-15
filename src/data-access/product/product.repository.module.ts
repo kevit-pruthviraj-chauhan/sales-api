@@ -4,6 +4,7 @@ import { BaseRepository } from '../base.repository';
 import { EntityRepository } from '@mikro-orm/mongodb';
 import { ProductUpdateDto } from '../../shared/dto/product/product-update.dto';
 import { InjectRepository } from '@mikro-orm/nestjs';
+import { ProductCreateDto } from '../../shared/dto/product/product-create.dto';
 
 @Injectable()
 export class ProductRepository extends BaseRepository<Product> {
@@ -14,7 +15,7 @@ export class ProductRepository extends BaseRepository<Product> {
     super(repo);
   }
 
-  async createProduct(data: RequiredEntityData<Product>): Promise<Product> {
+  async createProduct(data: ProductCreateDto): Promise<Product> {
     const product = this.em.create(Product, data);
     this.em.persist(product);
     await this.em.flush();

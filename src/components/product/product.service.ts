@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Product } from '../../data-access/product/product.entity';
-import { RequiredEntityData } from '@mikro-orm/mongodb';
 import { ProductRepository } from '../../data-access/product/product.repository.module';
 import { ProductUpdateDto } from '../../shared/dto/product/product-update.dto';
+import { ProductCreateDto } from '../../shared/dto/product/product-create.dto';
 
 @Injectable()
 export class ProductService {
-  constructor(private readonly productRepo: ProductRepository) { }
+  constructor(private readonly productRepo: ProductRepository) {}
 
-  async createProduct(data: RequiredEntityData<Product>): Promise<Product> {
+  async createProduct(data: ProductCreateDto): Promise<Product> {
     return await this.productRepo.createProduct(data);
   }
 
