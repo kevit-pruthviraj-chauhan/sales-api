@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { EntityManager } from '@mikro-orm/core';
-import { Product } from '../../data-access/product/product.entity';
+import { Product } from './product.entity';
 
 @Injectable()
 export class ProductRepository {

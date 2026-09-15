@@ -7,6 +7,7 @@ import {
 } from '@mikro-orm/decorators/legacy';
 
 import { ObjectId } from '@mikro-orm/mongodb';
+import { Opt } from '@mikro-orm/core';
 
 @Entity({ collection: 'customers' })
 export class Customer {
@@ -30,11 +31,11 @@ export class Customer {
   address?: string;
 
   @Property({ default: true })
-  isActive: boolean = true;
+  isActive: boolean & Opt = true;
 
   @Property()
-  createdAt: Date = new Date();
+  createdAt: Date & Opt = new Date();
 
   @Property({ onUpdate: () => new Date() })
-  updatedAt: Date = new Date();
+  updatedAt: Date & Opt = new Date();
 }

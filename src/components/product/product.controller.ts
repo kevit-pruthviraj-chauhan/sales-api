@@ -7,8 +7,9 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+
 import { ProductService } from './product.service';
-import { Product } from '../../data-access/product/product.entity';
+import { Product } from '../../data-access/product';
 import { ProductCreateDto } from '../../shared/dto/product/product-create.dto';
 import { ProductUpdateDto } from '../../shared/dto/product/product-update.dto';
 
@@ -17,13 +18,8 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
-  async createProduct(@Body() product: ProductCreateDto): Promise<Product> {
-    return this.productService.createProduct(
-      product.name,
-      product.price,
-      product.sku,
-      product.stock,
-    );
+  async create(@Body() dto: ProductCreateDto): Promise<Product> {
+    return this.productService.create(dto);
   }
 
   @Get()
@@ -39,13 +35,13 @@ export class ProductController {
   @Put(':id')
   async update(
     @Param('id') id: string,
-    @Body() product: ProductUpdateDto,
+    @Body() dto: ProductUpdateDto,
   ): Promise<Product> {
-    return this.productService.update(id, product.name, product.price);
+    return this.productService.update(id, dto);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<void> {
-    return this.productService.remove(id);
+    await this.productService.remove(id);
   }
 }
